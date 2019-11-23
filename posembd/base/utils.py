@@ -1,3 +1,11 @@
+'''
+do_policy: aplly generator do_policy
+    - emilia: uses all samples from all datasets, without shuffle
+    - visconde: uses all samples from all datasets, with shuffle
+
+get_batches: extract batches from (train, val or test) subsets from datasets
+'''
+
 def do_policy(policy, datasets, batch_size, list_samples):
     seed = random.randrange(sys.maxsize)
 
@@ -8,33 +16,23 @@ def do_policy(policy, datasets, batch_size, list_samples):
         list_samples[i] = (list_samples[i][0][0:list_n_batches[-1] * batch_size],
                            list_samples[i][1][0:list_n_batches[-1] * batch_size])
 
+
+    for i in range(len(datasets)):
+        for ii in range(list_n_batches[i]):
+            start = ii * batch_size
+            end = (ii+1) * batch_size
+
+            if(list_samples[i][0][start:end] == []):
+                continue
+
+            batch_inputs = list_samples[i][0][start:end]
+            batch_targets = list_samples[i][1][start:end]
+
+            list_batches.append((batch_inputs, batch_targets, datasets[i].name))
+
     if policy == "emilia":
-        for i in range(len(datasets)):
-            for ii in range(list_n_batches[i]):
-                start = ii * batch_size
-                end = (ii+1) * batch_size
-
-                if(list_samples[i][0][start:end] == []):
-                    continue
-
-                batch_inputs = list_samples[i][0][start:end]
-                batch_targets = list_samples[i][1][start:end]
-
-                list_batches.append((batch_inputs, batch_targets, datasets[i].name))
+        pass
     elif policy == "visconde":
-        for i in range(len(datasets)):
-            for ii in range(list_n_batches[i]):
-                start = ii * batch_size
-                end = (ii+1) * batch_size
-
-                if(list_samples[i][0][start:end] == []):
-                   continue
-
-                batch_inputs = list_samples[i][0][start:end]
-                batch_targets = list_samples[i][1][start:end]
-
-                list_batches.append((batch_inputs, batch_targets, datasets[i].name))
-
         random.Random(seed).shuffle(list_batches)
     else:
         pass
