@@ -2,6 +2,8 @@
 DatasetsPreparer: classe para gerar usableDatasets, datasets usaveis para treino
 '''
 
+from . import RawDataset
+
 class DatasetsPreparer():
 
     def __init__(self, dataFolder):
