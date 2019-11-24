@@ -3,6 +3,7 @@ DatasetsPreparer: classe para gerar usableDatasets, datasets usaveis para treino
 '''
 
 from .RawDataset import RawDataset
+from .UsableDataset import UsableDataset
 from ..io import sendOutput
 
 class DatasetsPreparer():
