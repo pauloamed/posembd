@@ -1,3 +1,5 @@
+from ..globals import LOG_LVL
+
 def saveToPickle(filePath, obj):
     pickleOut = open(filePath, "wb")
     pickle.dump(obj, pickleOut)
