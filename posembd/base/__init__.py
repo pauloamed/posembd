@@ -1,3 +1,6 @@
+import random
+
+
 '''
 do_policy: aplly generator do_policy
     - emilia: uses all samples from all datasets, without shuffle
@@ -5,6 +8,7 @@ do_policy: aplly generator do_policy
 
 get_batches: extract batches from (train, val or test) subsets from datasets
 '''
+
 
 def do_policy(policy, datasets, batchSize, samples):
     seed = random.randrange(sys.maxsize)
