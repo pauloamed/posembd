@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='posembd',
@@ -7,6 +7,6 @@ setup(
     author='Paulo Augusto de Lima Medeiros',
     author_email='pauloaugusto99@ufrn.edu.br',
     license='unlicense',
-    packages=['posembd', 'posembd.models', 'posembd.io', 'posembd.datasets', 'posembd.base'],
+    packages=find_packages(),
     zip_safe=False
 )

@@ -1,4 +1,4 @@
-from .CharBiLSTM import CharBiLSTM
+from .CharBiLSTM import CharBiLSTM as CharBILSTMModel
 from . import WordBiLSTM
 from . import POSTagger
 
