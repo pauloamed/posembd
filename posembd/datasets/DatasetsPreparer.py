@@ -64,7 +64,7 @@ class DatasetsPreparer():
 
         # Criando estruturas do vocabulário
         self.char2id = {char: index for index, char in enumerate(chars)}
-        self.id2char = [char for char, _ in char2id.items()]
+        self.id2char = [char for char, _ in self.char2id.items()]
 
 
 
