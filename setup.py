@@ -1,13 +1,12 @@
 from setuptools import setup
 
 setup(
-    name='posembds',
+    name='posembd',
     version='0.0.1',
     description='POS Embeddings',
-    url='git@github.com:rfschubert/ptolemaios-sdk-package.git',
     author='Paulo Augusto de Lima Medeiros',
     author_email='pauloaugusto99@ufrn.edu.br',
     license='unlicense',
-    packages=[],
+    packages=['posembd'],
     zip_safe=False
 )
