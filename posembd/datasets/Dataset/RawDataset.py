@@ -1,9 +1,10 @@
 import torch
 from ..io import getDataFromFile
 
-class Dataset():
+class RawDataset():
     def __init__(self, prefix, trainFile, valFile, testFile, useDelimiters=True):
 
+        self.filePrefix = prefix
         self.files = (trainFile, valFile, testFile)
         self.useDelimiters = useDelimiters
 
@@ -13,16 +14,12 @@ class Dataset():
         self.sent_test_size = len(self.testData[0])
 
     def loadData(self):
-        self.data = tuple(getDataFromFile(file for file in self.files))
+        self.data = tuple(getDataFromFile(self.filePrefix + file) for file in self.files)
 
 
     def parseData(self):
         rets = tuple(self.__parseData(data for data in self.data, self.useDelimiters))
         self.data, self.wordCounters = zip(*rets)
-
-
-    def extractChars(self):
-        return {c for sample in self.data[0] for token in sample for c in token[0]}
 
 
     def extractTagDict(self):
@@ -37,12 +34,17 @@ class Dataset():
         # Criando dicionario para as tags
         self.id2tag = [tag for tag, _ in self.tag2id.items()]
 
-    def prepare(self, char2id):
-        rets = tuple(self.__prepare_data(data, char2id) for data in self.data)
+
+    def extractChars(self):
+        return {c for sample in self.data[0] for token in sample for c in token[0]}
+
+
+    def tensorize(self, char2id):
+        rets = tuple(self.__tensorize(data, char2id) for data in self.data)
         self.input, self.target = zip(*rets)
         del self.data
 
-    def __prepare_data(self, dataset, char2id):
+    def __tensorize(self, dataset, char2id):
         inputs = [[torch.LongTensor([char2id.get(c, 1) for c in token[0]]) for token in sample] for sample in dataset]
         targets = [torch.LongTensor([self.tag2id.get(token[1], 0) for token in sample]) for sample in dataset]
         return (inputs, targets)
