@@ -4,8 +4,8 @@ DatasetsPreparer: classe para gerar usableDatasets, datasets usaveis para treino
 
 class DatasetsPreparer():
 
-    def __init__(dataFolder):
-        self.dataFolder
+    def __init__(self, dataFolder):
+        self.dataFolder = dataFolder
 
     def prepare(datasets):
 
@@ -46,7 +46,7 @@ class DatasetsPreparer():
 
         return usableDatasets
 
-    def getChar2idDict():
+    def getDicts():
         return (self.char2id, self.id2char)
 
 
