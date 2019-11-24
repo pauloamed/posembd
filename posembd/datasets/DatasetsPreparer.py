@@ -13,7 +13,7 @@ class DatasetsPreparer():
     def prepare(self, datasets):
 
         rawDatasets = [
-            RawDataset(self.dataFolder, datasets[i]['trainFile'], datasets[i]['valFile'], datasets[i]['testFile'])
+            RawDataset(datasets[i]['name'], self.dataFolder, datasets[i]['trainFile'], datasets[i]['valFile'], datasets[i]['testFile'])
             for i in range(len(datasets))
         ]
 

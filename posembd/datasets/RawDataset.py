@@ -2,8 +2,9 @@ import torch
 from ..io import getDataFromFile
 
 class RawDataset():
-    def __init__(self, prefix, trainFile, valFile, testFile, useDelimiters=True):
+    def __init__(self, name, prefix, trainFile, valFile, testFile, useDelimiters=True):
 
+        self.name = name
         self.filePrefix = prefix
         self.files = (trainFile, valFile, testFile)
         self.useDelimiters = useDelimiters
