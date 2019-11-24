@@ -1,8 +1,6 @@
-from . import CharBiLSTM
-from . import WordBiLSTM
-from . import POSTagger
-
-CharBiLSTMM = CharBiLSTM.CharBiLSTM
+from .CharBiLSTM import CharBiLSTM
+from .WordBiLSTM import WordBiLSTM
+from .POSTagger import POSTagger
 
 import torch
 
