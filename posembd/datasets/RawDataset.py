@@ -18,7 +18,7 @@ class RawDataset():
 
 
     def parseData(self):
-        rets = tuple(self.__parseData(data for data in self.data, self.useDelimiters))
+        rets = tuple(self.__parseData(data, self.useDelimiters) for data in self.data)
         self.data, self.wordCounters = zip(*rets)
 
 
