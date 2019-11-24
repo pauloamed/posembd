@@ -7,6 +7,6 @@ setup(
     author='Paulo Augusto de Lima Medeiros',
     author_email='pauloaugusto99@ufrn.edu.br',
     license='unlicense',
-    packages=['posembd'],
+    packages=['posembd', 'posembd.models', 'posembd.io', 'posembd.datasets', 'posembd.base'],
     zip_safe=False
 )
