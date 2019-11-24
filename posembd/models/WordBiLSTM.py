@@ -2,7 +2,7 @@ import torch
 from torch import nn
 import torch.nn.utils.rnn as rnn
 
-class WordBILSTM(nn.Module):
+class WordBiLSTM(nn.Module):
     def __init__(self, word_embedding_size):
         super().__init__()
 

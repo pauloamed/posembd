@@ -4,19 +4,19 @@ from torch.nn.utils import rnn
 
 class POSTagger(nn.Module):
 
-    def __init__(self, charBILSTM, wordBILSTM1, wordBILSTM2, n_bilstm_hidden, datasets):
+    def __init__(self, charBiLSTM, wordBiLSTM1, wordBiLSTM2, n_bilstm_hidden, datasets):
         super().__init__()
 
         # Retrieving the model size (#layers and #units)
         self.n_tag_bilstm_hidden = n_bilstm_hidden
 
         # Retrieving the word emebedding size from the embedding model
-        word_embedding_size = charBILSTM.word_embedding_size
+        word_embedding_size = charBiLSTM.word_embedding_size
 
         # Setting the embedding model as the feature extractor
-        self.charBILSTM = charBILSTM
-        self.wordBILSTM1 = wordBILSTM1
-        self.wordBILSTM2 = wordBILSTM2
+        self.charBiLSTM = charBiLSTM
+        self.wordBiLSTM1 = wordBiLSTM1
+        self.wordBiLSTM2 = wordBiLSTM2
 
         # Defining the bilstm layer(s)
         self.tag_bilstm = nn.LSTM(word_embedding_size, self.n_tag_bilstm_hidden,
@@ -60,13 +60,13 @@ class POSTagger(nn.Module):
         output.update({dataset: None for dataset in self.dataset2id})
 
 
-        embeddings1, lens = self.charBILSTM(inputs) # Char BILSTM
+        embeddings1, lens = self.charBiLSTM(inputs) # Char BiLSTM
         output["embeddings1"] = embeddings1.clone() # Saving output
 
-        embeddings2, lens, _ = self.wordBILSTM1((embeddings1, lens)) # 1-Word BILSTM
+        embeddings2, lens, _ = self.wordBiLSTM1((embeddings1, lens)) # 1-Word BiLSTM
         output["embeddings2"] = embeddings2.clone() # Saving output
 
-        embeddings3, lens, (rev_embeddings3, fwd_embeddings3) = self.wordBILSTM2((embeddings2, lens))
+        embeddings3, lens, (rev_embeddings3, fwd_embeddings3) = self.wordBiLSTM2((embeddings2, lens))
         output["embeddings3"] = embeddings3.clone() # Saving output
         output["embeddings3_rev"] = rev_embeddings3 # Saving output
         output["embeddings3_fwd"] = fwd_embeddings3 # Saving output

@@ -2,7 +2,7 @@ import torch
 from torch import nn
 import torch.nn.utils.rnn as rnn
 
-class CharBILSTM(nn.Module):
+class CharBiLSTM(nn.Module):
     def __init__(self, char_embedding_size, word_embedding_size, char2id):
         super().__init__()
 
