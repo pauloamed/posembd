@@ -7,7 +7,7 @@ class DatasetsPreparer():
     def __init__(self, dataFolder):
         self.dataFolder = dataFolder
 
-    def prepare(datasets):
+    def prepare(self, datasets):
 
         rawDatasets = [
             RawDataset(self.dataFolder, datasets[i]['trainFile'], datasets[i]['valFile'], datasets[i]['testFile'])
@@ -30,7 +30,7 @@ class DatasetsPreparer():
             send_output("<<< Finished building tag dict for dataset", 1)
 
         send_output("\n>> Building char dict...", 1)
-        __buildCharDict(rawDatasets)
+        self.__buildCharDict(rawDatasets)
         send_output("<< Finished building dicts!", 1)
 
         for i in range(len(rawDatasets)):
@@ -46,11 +46,11 @@ class DatasetsPreparer():
 
         return usableDatasets
 
-    def getDicts():
+    def getDicts(self):
         return (self.char2id, self.id2char)
 
 
-    def __buildCharDict(datasets):
+    def __buildCharDict(self, datasets):
 
         extractedChars = set()
         for dataset in datasets:
