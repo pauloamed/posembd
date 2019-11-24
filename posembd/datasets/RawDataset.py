@@ -40,7 +40,7 @@ class RawDataset():
 
     def tensorize(self, char2id):
         rets = tuple(self.__tensorize(data, char2id) for data in self.data)
-        self.input, self.target = zip(*rets)
+        self.inputData, self.targetData = zip(*rets)
         del self.data
 
     def __tensorize(self, dataset, char2id):

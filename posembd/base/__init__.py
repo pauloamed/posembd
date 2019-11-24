@@ -6,57 +6,57 @@ do_policy: aplly generator do_policy
 get_batches: extract batches from (train, val or test) subsets from datasets
 '''
 
-def do_policy(policy, datasets, batch_size, list_samples):
+def do_policy(policy, datasets, batchSize, samples):
     seed = random.randrange(sys.maxsize)
 
-    list_batches, list_n_batches = [], []
+    batches, numBatches = [], []
 
     for i in range(len(datasets)):
-        list_n_batches.append(len(list_samples[i][0])//batch_size)
-        list_samples[i] = (list_samples[i][0][0:list_n_batches[-1] * batch_size],
-                           list_samples[i][1][0:list_n_batches[-1] * batch_size])
+        numBatches.append(len(samples[i][0])//batchSize)
+        samples[i] = (samples[i][0][0:numBatches[-1] * batchSize],
+                           samples[i][1][0:numBatches[-1] * batchSize])
 
 
     for i in range(len(datasets)):
-        for ii in range(list_n_batches[i]):
-            start = ii * batch_size
-            end = (ii+1) * batch_size
+        for ii in range(numBatches[i]):
+            start = ii * batchSize
+            end = (ii+1) * batchSize
 
-            if(list_samples[i][0][start:end] == []):
+            if(samples[i][0][start:end] == []):
                 continue
 
-            batch_inputs = list_samples[i][0][start:end]
-            batch_targets = list_samples[i][1][start:end]
+            inputsBatch = samples[i][0][start:end]
+            targetsBatch = samples[i][1][start:end]
 
-            list_batches.append((batch_inputs, batch_targets, datasets[i].name))
+            batches.append((inputsBatch, targetsBatch, datasets[i].name))
 
     if policy == "emilia":
         pass
     elif policy == "visconde":
-        random.Random(seed).shuffle(list_batches)
+        random.Random(seed).shuffle(batches)
     else:
         pass
 
-    return list_batches
+    return batches
 
-def get_batches(datasets, tvt, batch_size=1, policy="emilia"):
-    list_samples = []
+def get_batches(datasets, tvt, batchSize=1, policy="emilia"):
+    samples = []
 
     if tvt == "train":
-        datasets = [d for d in datasets if d.use_train]
-        total_len = sum([dataset.sent_train_size for dataset in datasets])
-        list_samples = [(d.train_input, d.train_target) for d in datasets]
+        datasets = [d for d in datasets if d.useTrain]
+        totalLen = sum([dataset.sentCountTrain for dataset in datasets])
+        samples = [(d.trainInput, d.trainTarget) for d in datasets]
     elif tvt == 'val':
-        datasets = [d for d in datasets if d.use_val]
-        total_len = sum([dataset.sent_val_size for dataset in datasets])
-        list_samples = [(d.val_input, d.val_target) for d in datasets]
+        datasets = [d for d in datasets if d.useVal]
+        totalLen = sum([dataset.sentCountVal for dataset in datasets])
+        samples = [(d.valInput, d.valTarget) for d in datasets]
     elif tvt == 'test':
-        total_len = sum([dataset.sent_test_size for dataset in datasets])
-        list_samples = [(d.test_input, d.test_target) for d in datasets]
+        totalLen = sum([dataset.sentCountTest for dataset in datasets])
+        samples = [(d.testInput, d.testTarget) for d in datasets]
 
 
-    list_batches = do_policy(policy, datasets, batch_size, list_samples)
+    batches = do_policy(policy, datasets, batchSize, samples)
 
-    desc = "{}: batch_size={}, policy={}".format(tvt, batch_size, policy)
-    for b in tqdm.tqdm(list_batches, desc=desc):
+    desc = "{}: batchSize={}, policy={}".format(tvt, batchSize, policy)
+    for b in tqdm.tqdm(batches, desc=desc):
         yield b
