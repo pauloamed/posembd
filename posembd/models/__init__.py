@@ -1,4 +1,4 @@
-from .CharBiLSTM import CharBiLSTM
+import CharBiLSTM.CharBiLSTM
 from .WordBiLSTM import WordBiLSTM
 from .POSTagger import POSTagger
 
