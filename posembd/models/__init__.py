@@ -1,14 +1,16 @@
-from CharBiLSTM import CharBiLSTM as aaa
+from CharBiLSTM import CharBiLSTM
 # import CharBiLSTM.CharBiLSTM.CharBiLSTM as aa
 # from .WordBiLSTM import WordBiLSTM
 # from .POSTagger import POSTagger
 
 import torch
 
+print(CharBiLSTM)
+
 def createPOSModel(charEmbeddingSize, wordEmbeddingSize, char2id, bilstmSize, datasets):
-    charBisltm = CharBILSTM(charEmbeddingSize, wordEmbeddingSize, char2id)
-    wordBilstm1 = WordBILSTM(wordEmbeddingSize)
-    wordBilstm2 = WordBILSTM(wordEmbeddingSize)
+    charBisltm = CharBiLSTM(charEmbeddingSize, wordEmbeddingSize, char2id)
+    wordBilstm1 = WordBiLSTM(wordEmbeddingSize)
+    wordBilstm2 = WordBiLSTM(wordEmbeddingSize)
 
     posModel = POSTagger(charBisltm, wordBilstm1, wordBilstm2, bilstmSize, datasets)
     return posModel
