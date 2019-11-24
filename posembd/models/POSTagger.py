@@ -35,7 +35,7 @@ class POSTagger(nn.Module):
 
         self.dropout = nn.Dropout(0.4)
 
-    def forward(self, inputs):
+    def forward(self, inputs, batch_process_char = False):
         # Passing the input through the embeding model in order to retrieve the
         # embeddings
 
@@ -60,7 +60,7 @@ class POSTagger(nn.Module):
         output.update({dataset: None for dataset in self.dataset2id})
 
 
-        embeddings1, lens = self.charBiLSTM(inputs) # Char BiLSTM
+        embeddings1, lens = self.charBiLSTM.forward(inputs, batch_process = batch_process_char) # Char BiLSTM
         output["embeddings1"] = embeddings1.clone() # Saving output
 
         embeddings2, lens, _ = self.wordBiLSTM1((embeddings1, lens)) # 1-Word BiLSTM
