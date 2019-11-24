@@ -18,7 +18,7 @@ class DatasetsPreparer():
         ]
 
         for i in range(len(rawDatasets)):
-            sendOutput("\n>> Initializing {} dataset".format(self.name), 1)
+            sendOutput("\n>> Initializing {} dataset".format(rawDatasets[i].name), 1)
 
             sendOutput(">>> Started loading dataset", 1)
             rawDatasets[i].loadData()
@@ -37,10 +37,10 @@ class DatasetsPreparer():
         sendOutput("<< Finished building dicts!", 1)
 
         for i in range(len(rawDatasets)):
-            sendOutput("\n>> Started preparing {} dataset".format(self.name), 1)
+            sendOutput("\n>> Started preparing {} dataset".format(rawDatasets[i].name), 1)
             rawDatasets[i].tensorize()
-            sendOutput("<< Finished preparing {} dataset".format(self.name), 1)
-            sendOutput("<< Finished initializing {} dataset".format(self.name), 1)
+            sendOutput("<< Finished preparing {} dataset".format(rawDatasets[i].name), 1)
+            sendOutput("<< Finished initializing {} dataset".format(rawDatasets[i].name), 1)
 
         usableDatasets = [
             UsableDataset(rawDatasets[i], datasets[i]['name'], datasets[i]['useTrain'], datasets[i]['usaVal'])
