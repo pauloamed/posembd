@@ -57,9 +57,9 @@ class DatasetsPreparer():
 
         extractedChars = set()
         for dataset in datasets:
-            sendOutput(">>> Started extracting chars from {} dataset".format(self.name), 1)
+            sendOutput(">>> Started extracting chars from {} dataset".format(dataset[i].name), 1)
             extractedChars = extractedChars.union(dataset.extractChars())
-            sendOutput("<<< Finished extracting chars from {} dataset".format(self.name), 1)
+            sendOutput("<<< Finished extracting chars from {} dataset".format(dataset[i].name), 1)
         chars = [' ', 'UNK'] + list(sorted(extractedChars))
 
         # Criando estruturas do vocabulário
