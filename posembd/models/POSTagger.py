@@ -14,9 +14,9 @@ class POSTagger(nn.Module):
         word_embedding_size = charBiLSTM.word_embedding_size
 
         # Setting the embedding model as the feature extractor
-        self.charBiLSTM = charBiLSTM
-        self.wordBiLSTM1 = wordBiLSTM1
-        self.wordBiLSTM2 = wordBiLSTM2
+        self.charBILSTM = charBiLSTM
+        self.wordBILSTM1 = wordBiLSTM1
+        self.wordBILSTM2 = wordBiLSTM2
 
         # Defining the bilstm layer(s)
         self.tag_bilstm = nn.LSTM(word_embedding_size, self.n_tag_bilstm_hidden,
