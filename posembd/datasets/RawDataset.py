@@ -9,9 +9,6 @@ class RawDataset():
         self.useDelimiters = useDelimiters
 
         # Train, val and test data size
-        self.sent_train_size = len(self.trainData[0])
-        self.sent_val_size = len(self.valData[0])
-        self.sent_test_size = len(self.testData[0])
 
     def loadData(self):
         self.data = tuple(getDataFromFile(self.filePrefix + file) for file in self.files)
@@ -20,6 +17,7 @@ class RawDataset():
     def parseData(self):
         rets = tuple(self.__parseData(data, self.useDelimiters) for data in self.data)
         self.data, self.wordCounters = zip(*rets)
+        self.sentCounters = tuple(len(data) for data in self.data)
 
 
     def extractTagDict(self):
