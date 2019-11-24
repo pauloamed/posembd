@@ -60,13 +60,13 @@ class POSTagger(nn.Module):
         output.update({dataset: None for dataset in self.dataset2id})
 
 
-        embeddings1, lens = self.charBiLSTM.forward(inputs, batch_process = batch_process_char) # Char BiLSTM
+        embeddings1, lens = self.charBILSTM.forward(inputs, batch_process = batch_process_char) # Char BiLSTM
         output["embeddings1"] = embeddings1.clone() # Saving output
 
-        embeddings2, lens, _ = self.wordBiLSTM1((embeddings1, lens)) # 1-Word BiLSTM
+        embeddings2, lens, _ = self.wordBILSTM1((embeddings1, lens)) # 1-Word BiLSTM
         output["embeddings2"] = embeddings2.clone() # Saving output
 
-        embeddings3, lens, (rev_embeddings3, fwd_embeddings3) = self.wordBiLSTM2((embeddings2, lens))
+        embeddings3, lens, (rev_embeddings3, fwd_embeddings3) = self.wordBILSTM2((embeddings2, lens))
         output["embeddings3"] = embeddings3.clone() # Saving output
         output["embeddings3_rev"] = rev_embeddings3 # Saving output
         output["embeddings3_fwd"] = fwd_embeddings3 # Saving output
