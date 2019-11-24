@@ -1,7 +1,6 @@
 import torch
-from ..io import openFile
 
-class Dataset():
+class UsableDataset():
     def __init__(self, name, rawDataset, useTrain=True, useVal=True):
         self.name = name
 
