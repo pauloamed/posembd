@@ -1,5 +1,5 @@
 import random
-
+import sys
 
 '''
 do_policy: aplly generator do_policy
