@@ -3,6 +3,7 @@ DatasetsPreparer: classe para gerar usableDatasets, datasets usaveis para treino
 '''
 
 from .RawDataset import RawDataset
+from ..io import sendOutput
 
 class DatasetsPreparer():
 
@@ -17,29 +18,29 @@ class DatasetsPreparer():
         ]
 
         for i in range(len(rawDatasets)):
-            send_output("\n>> Initializing {} dataset".format(self.name), 1)
+            sendOutput("\n>> Initializing {} dataset".format(self.name), 1)
 
-            send_output(">>> Started loading dataset", 1)
+            sendOutput(">>> Started loading dataset", 1)
             rawDatasets[i].loadData()
-            send_output("<<< Finished loading dataset", 1)
+            sendOutput("<<< Finished loading dataset", 1)
 
-            send_output(">>> Started parsing data from dataset", 1)
+            sendOutput(">>> Started parsing data from dataset", 1)
             rawDatasets[i].parseData()
-            send_output("<<< Finished parsing data from dataset", 1)
+            sendOutput("<<< Finished parsing data from dataset", 1)
 
-            send_output(">>> Started building tag dict for dataset", 1)
+            sendOutput(">>> Started building tag dict for dataset", 1)
             rawDatasets[i].extractTagDict()
-            send_output("<<< Finished building tag dict for dataset", 1)
+            sendOutput("<<< Finished building tag dict for dataset", 1)
 
-        send_output("\n>> Building char dict...", 1)
+        sendOutput("\n>> Building char dict...", 1)
         self.__buildCharDict(rawDatasets)
-        send_output("<< Finished building dicts!", 1)
+        sendOutput("<< Finished building dicts!", 1)
 
         for i in range(len(rawDatasets)):
-            send_output("\n>> Started preparing {} dataset".format(self.name), 1)
+            sendOutput("\n>> Started preparing {} dataset".format(self.name), 1)
             rawDatasets[i].tensorize()
-            send_output("<< Finished preparing {} dataset".format(self.name), 1)
-            send_output("<< Finished initializing {} dataset".format(self.name), 1)
+            sendOutput("<< Finished preparing {} dataset".format(self.name), 1)
+            sendOutput("<< Finished initializing {} dataset".format(self.name), 1)
 
         usableDatasets = [
             UsableDataset(rawDatasets[i], datasets[i]['name'], datasets[i]['useTrain'], datasets[i]['usaVal'])
@@ -56,9 +57,9 @@ class DatasetsPreparer():
 
         extractedChars = set()
         for dataset in datasets:
-            send_output(">>> Started extracting chars from {} dataset".format(self.name), 1)
+            sendOutput(">>> Started extracting chars from {} dataset".format(self.name), 1)
             extractedChars = extractedChars.union(dataset.extractChars())
-            send_output("<<< Finished extracting chars from {} dataset".format(self.name), 1)
+            sendOutput("<<< Finished extracting chars from {} dataset".format(self.name), 1)
         chars = [' ', 'UNK'] + list(sorted(extractedChars))
 
         # Criando estruturas do vocabulário
