@@ -38,7 +38,7 @@ class DatasetsPreparer():
 
         for i in range(len(rawDatasets)):
             sendOutput("\n>> Started preparing {} dataset".format(rawDatasets[i].name), 1)
-            rawDatasets[i].tensorize()
+            rawDatasets[i].tensorize(self.char2id)
             sendOutput("<< Finished preparing {} dataset".format(rawDatasets[i].name), 1)
             sendOutput("<< Finished initializing {} dataset".format(rawDatasets[i].name), 1)
 
