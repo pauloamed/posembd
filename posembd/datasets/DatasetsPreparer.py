@@ -44,7 +44,7 @@ class DatasetsPreparer():
             sendOutput("<< Finished initializing {} dataset".format(rawDatasets[i].name), 1)
 
         usableDatasets = [
-            UsableDataset(rawDatasets[i], datasets[i]['name'], datasets[i]['useTrain'], datasets[i]['usaVal'])
+            UsableDataset(rawDatasets[i], datasets[i]['name'], datasets[i]['useTrain'], datasets[i]['useVal'])
             for i in range(len(datasets))
         ]
 
