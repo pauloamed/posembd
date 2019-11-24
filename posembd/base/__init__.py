@@ -1,5 +1,6 @@
 import random
 import sys
+import tqdm
 
 '''
 do_policy: aplly generator do_policy
