@@ -4,13 +4,13 @@ from ..io import getDataFromFile
 from tqdm import tqdm
 
 class RawDataset():
-    def __init__(self, name, prefix, trainFile, valFile, testFile, useDelimiters=True):
+    def __init__(self, name, prefix, trainFile, valFile, testFile, tagSet, useDelimiters=True):
 
         self.name = name
         self.filePrefix = prefix
         self.files = (trainFile, valFile, testFile)
         self.useDelimiters = useDelimiters
-        # self.tagSet = tagSet
+        self.tagSet = tagSet
 
         # Train, val and test data size
 
@@ -30,13 +30,12 @@ class RawDataset():
                 for token in sample}
         tags = list(sorted(extracted_tags))
 
-        self.tag2id = {"BOS": 0, "EOS": 1}
+        tag2id = {'BOS': 0, 'EOS': 1}
         for tag in tags:
-            if tag not in self.tag2id:
-                self.tag2id[tag] = len(self.tag2id)
+            if tag not in tag2id:
+                tag2id[tag] = len(tag2id)
 
-        # Criando dicionario para as tags
-        self.id2tag = [tag for tag, _ in self.tag2id.items()]
+        return tag2id
 
 
     def extractChars(self):

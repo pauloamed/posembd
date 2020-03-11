@@ -16,15 +16,24 @@ class DatasetsPreparer():
     def prepare(self, datasets):
 
         rawDatasets = [
-            RawDataset(datasets[i]['name'], self.dataFolder, datasets[i]['trainFile'], datasets[i]['valFile'], datasets[i]['testFile'])
+            RawDataset(datasets[i]['name'], self.dataFolder, datasets[i]['trainFile'], datasets[i]['valFile'], datasets[i]['testFile'], datasets[i]['tagSet'])
             for i in range(len(datasets))
         ]
 
+        tagSet2tagDict = dict()
         for i in range(len(rawDatasets)):
             rawDatasets[i].loadData()
 
             rawDatasets[i].parseData()
-            rawDatasets[i].extractTagDict()
+            tagDict = rawDatasets[i].extractTagDict()
+
+            if rawDatasets[i].tagSet not in tagSet2tagDict:
+                tagSet2tagDict[rawDatasets[i].tagSet] = tagDict
+            else:
+                tagSet2tagDict[rawDatasets[i].tagSet].update(tagDict)
+
+        for i in range(len(rawDatasets)):
+            rawDatasets[i].tag2id = tagSet2tagDict[rawDatasets[i].tagSet]
 
         self.__buildCharDict(rawDatasets)
 
@@ -37,6 +46,7 @@ class DatasetsPreparer():
         ]
 
         return usableDatasets
+
 
     def getDicts(self):
         return (self.char2id, self.id2char)

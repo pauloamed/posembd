@@ -4,7 +4,7 @@ from .POSTagger import POSTagger
 
 import torch
 
-def createPOSModel(charEmbeddingSize, wordEmbeddingSize, char2id, bilstmSize, datasets):
+def createPOSModel(charEmbeddingSize, wordEmbeddingSize, bilstmSize, char2id, datasets):
     charBisltm = CharBiLSTM(charEmbeddingSize, wordEmbeddingSize, char2id)
     wordBilstm1 = WordBiLSTM(wordEmbeddingSize)
     wordBilstm2 = WordBiLSTM(wordEmbeddingSize)

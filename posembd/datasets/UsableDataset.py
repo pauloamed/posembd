@@ -3,6 +3,7 @@ import torch
 class UsableDataset():
     def __init__(self, rawDataset, useTrain=True, useVal=True):
         self.name = rawDataset.name
+        self.tagSet = rawDataset.tagSet
 
         # Setting bool flags
         self.useTrain = useTrain
@@ -17,8 +18,7 @@ class UsableDataset():
         self.sentCountTrain, self.sentCountVal, self.sentCountTest = rawDataset.sentCounters
 
         self.tag2id = rawDataset.tag2id
-        self.id2tag = rawDataset.id2tag
-        
+
 
     def __str__(self):
         ret = ""

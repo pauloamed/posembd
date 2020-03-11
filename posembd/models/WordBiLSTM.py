@@ -3,20 +3,20 @@ from torch import nn
 import torch.nn.utils.rnn as rnn
 
 class WordBiLSTM(nn.Module):
-    def __init__(self, word_embedding_size):
+    def __init__(self, wordEmbeddingSize):
         super().__init__()
 
         # Setting the embedding dimension
-        self.word_embedding_size = word_embedding_size
+        self.wordEmbeddingSize = wordEmbeddingSize
 
         # Setting up the bilstm
-        self.bilstm = nn.LSTM(word_embedding_size,
-                              word_embedding_size, 1,
+        self.bilstm = nn.LSTM(wordEmbeddingSize,
+                              wordEmbeddingSize, 1,
                               batch_first=True,
                               bidirectional=True)
 
         # Setting up the projection layer
-        self.projection_layer = nn.Linear(2*word_embedding_size, word_embedding_size)
+        self.projection_layer = nn.Linear(2*wordEmbeddingSize, wordEmbeddingSize)
 
         # Dropout
         self.dropout = nn.Dropout(0.2)
@@ -38,12 +38,12 @@ class WordBiLSTM(nn.Module):
         output, lens = rnn.pad_packed_sequence(output, batch_first=True)
 
         # Split the outputs (forward and reverse outputs) and saves to var
-        splitted_output = torch.split(output, self.word_embedding_size, dim=2)
+        # splitted_output = torch.split(output, self.wordEmbeddingSize, dim=2)
 
         # Linear transformation into smaller dimension
-        output = self.projection_layer(self.dropout(output))+input_embeddings
+        output = self.projection_layer(self.dropout(output)) + input_embeddings
 
         # Dropout
         output = self.dropout(output)
 
-        return (output, lens, splitted_output)
+        return (output, lens)
