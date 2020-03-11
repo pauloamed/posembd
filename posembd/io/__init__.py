@@ -1,4 +1,4 @@
-from ..globals import LOG_LVL
+from ..globals import getLogLvl, OUTPUT_PATH
 
 def saveToPickle(filePath, obj):
     pickleOut = open(filePath, "wb")
@@ -13,6 +13,7 @@ def loadFromPickle(filePath):
 
     return obj
 
+
 def saveDictToFile(filePath, fileDict):
     saveToPickle(filePath, fileDict)
 
@@ -22,14 +23,14 @@ def getDictFromFile(filePath):
 
 
 def sendOutput(str, log_level):
-    if log_level <= LOG_LVL:
+    if log_level <= getLogLvl():
         print(str)
     try:
         file = open(OUTPUT_PATH, "a")
         file.write(str + "\n")
         file.close()
     except:
-        if log_level <= LOG_LVL:
+        if log_level <= getLogLvl():
             print("Was not able to open and write on output file")
 
 

@@ -16,17 +16,9 @@ class UsableDataset():
         self.wordCountTrain, self.wordCountVal, self.wordCountTest = rawDataset.wordCounters
         self.sentCountTrain, self.sentCountVal, self.sentCountTest = rawDataset.sentCounters
 
-        # Setting training and val loss
-        self.trainLoss = 0.0
-        self.valLoss = 0.0
-
         self.tag2id = rawDataset.tag2id
         self.id2tag = rawDataset.id2tag
-
-        # Setting test counters
-        self.classCorrect = [0 for _ in range(len(self.tag2id))]
-        self.classTotal = [0 for _ in range(len(self.tag2id))]
-
+        
 
     def __str__(self):
         ret = ""
