@@ -15,7 +15,8 @@ class RawDataset():
         # Train, val and test data size
 
     def loadData(self):
-        self.data = (getDataFromFile(self.filePrefix + file) for file in tqdm(self.files, "Loading files"))
+        self.data = (getDataFromFile(self.filePrefix + file)
+                for file in tqdm(self.files, "Loading files from {}".format(self.name)))
 
 
     def parseData(self):

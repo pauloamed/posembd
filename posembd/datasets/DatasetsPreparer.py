@@ -20,11 +20,13 @@ class DatasetsPreparer():
             for i in range(len(datasets))
         ]
 
-        tagSet2tagDict = dict()
+        # pode ser paralelizado
         for i in range(len(rawDatasets)):
             rawDatasets[i].loadData()
-
             rawDatasets[i].parseData()
+
+        tagSet2tagDict = dict()
+        for i in range(len(rawDatasets)):
             tagDict = rawDatasets[i].extractTagDict()
 
             if rawDatasets[i].tagSet not in tagSet2tagDict:
@@ -37,6 +39,7 @@ class DatasetsPreparer():
 
         self.__buildCharDict(rawDatasets)
 
+        # pode ser paralelizado
         for i in range(len(rawDatasets)):
             rawDatasets[i].tensorize(self.char2id)
 
