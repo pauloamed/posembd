@@ -29,8 +29,8 @@ class POSTagger(nn.Module):
 
         for d in datasets:
             if d.tagSet not in self.tagSet2classifier:
-                classifiers.append(nn.Linear(self.biLSTMSize * 2, len(d.tag2id)))
                 self.tagSet2classifier[d.tagSet] = len(classifiers)
+                classifiers.append(nn.Linear(self.biLSTMSize * 2, len(d.tag2id)))
 
 
         self.classifiers = nn.ModuleList(classifiers)
@@ -39,10 +39,12 @@ class POSTagger(nn.Module):
         self.dropout = nn.Dropout(0.4)
 
 
-    def forward(self, inputs, batch_process_char = False):
+    def forward(self, inputs, desiredOutput = None, batch_process_char = False):
         # Passing the input through the embeding model in order to retrieve the
         # embeddings
 
+        if desiredOutput is None:
+            desiredOutput = [False, False, False, False]
 
         # Setting output formatting
         output = {
@@ -52,25 +54,22 @@ class POSTagger(nn.Module):
             3: None, # pos refined word embeddings
             "length": None # batch length
         }
-        # It will be computed the output for all datasets
-        '''
-            "dataset_1": None, # output for dataset1
-            "dataset_2": None, # output for dataset1
-            ...
-            "dataset_n": None # output for dataset1
-        '''
-        output.update({dataset: None for dataset in self.dataset2id})
+        output.update({tagSet: None for tagSet in self.tagSet2classifier})
         embeddings = [None for _ in range(4)]
 
 
         embeddings[0], lens = self.charBILSTM.forward(inputs, batch_process = batch_process_char) # Char BiLSTM
-        output[0] = embeddings[0].clone() # Saving output
+        if desiredOutput[0]:
+            output[0] = embeddings[0].clone() # Saving output
 
         embeddings[1], lens = self.wordBILSTM1((embeddings[0], lens)) # 1-Word BiLSTM
-        output[1] = embeddings[1].clone() # Saving output
+        if desiredOutput[1]:
+            output[1] = embeddings[1].clone() # Saving output
 
         embeddings[2], lens = self.wordBILSTM2((embeddings[1], lens))
-        output[2] = embeddings[2].clone() # Saving output
+        if desiredOutput[2]:
+            output[2] = embeddings[2].clone() # Saving output
+
         output["length"] = max(lens) # Saving output
 
         # Sequence packing
@@ -78,9 +77,9 @@ class POSTagger(nn.Module):
 
         # Passing the embeddings through the bilstm layer(s)
         embeddings[3], _ = self.tagBiLSTM(embeddings[2])
-
         embeddings[3], _ = rnn.pad_packed_sequence(embeddings[3], batch_first=True)
-        output[3] = embeddings[3].clone()
+        if desiredOutput[3]:
+            output[3] = embeddings[3].clone()
 
         # Applying dropout
         embeddings[3] = self.dropout(embeddings[3])
@@ -92,6 +91,6 @@ class POSTagger(nn.Module):
         # Saving final outputs
         # Passing through the final layer for each dataset
         output.update({tagSet : self.classifiers[i](embeddings[3])
-                            for tagSet, i in self.tagSet2classifier})
+                            for tagSet, i in self.tagSet2classifier.items()})
 
         return output
