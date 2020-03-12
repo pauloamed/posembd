@@ -44,7 +44,7 @@ def do_policy(policy, datasets, batchSize, samples):
 
     return batches
 
-def get_batches(datasets, tvt, batchSize=1, policy="emilia"):
+def get_batches(datasets, tvt, batchSize=1, policy="emilia", numBatches = -1):
     samples = []
 
     if tvt == "train":
@@ -60,7 +60,13 @@ def get_batches(datasets, tvt, batchSize=1, policy="emilia"):
         samples = [(d.testInput, d.testTarget) for d in datasets]
 
 
+
     batches = do_policy(policy, datasets, batchSize, samples)
+
+    if numBatches != -1:
+        numBatches = min(len(batches), numBatches)
+        batches = batches[:numBatches]
+
 
     desc = "{}: batchSize={}, policy={}".format(tvt, batchSize, policy)
     for b in tqdm.tqdm(batches, desc=desc):
