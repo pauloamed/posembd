@@ -4,11 +4,11 @@ from torch.nn.utils import rnn
 
 class POSTagger(nn.Module):
 
-    def __init__(self, charBiLSTM, wordBiLSTM1, wordBiLSTM2, n_bilstm_hidden, datasets):
+    def __init__(self, charBiLSTM, wordBiLSTM1, wordBiLSTM2, posEmbeddingSize, datasets):
         super().__init__()
 
         # Retrieving the model size (#layers and #units)
-        self.biLSTMSize = n_bilstm_hidden
+        self.posEmbeddingSize = posEmbeddingSize
 
         # Retrieving the word emebedding size from the embedding model
         wordEmbeddingSize = charBiLSTM.wordEmbeddingSize
@@ -19,9 +19,12 @@ class POSTagger(nn.Module):
         self.wordBILSTM2 = wordBiLSTM2
 
         # Defining the bilstm layer(s)
-        self.tagBiLSTM = nn.LSTM(wordEmbeddingSize, self.biLSTMSize,
+        self.tagBiLSTM = nn.LSTM(wordEmbeddingSize, self.posEmbeddingSize,
                                   1, batch_first=True,
                                   bidirectional=True)
+
+        # Setting up the projection layer
+        self.projection_layer = nn.Linear(2 * posEmbeddingSize, posEmbeddingSize)
 
         # Setting the final layer (classifier) for each dataset being used
         classifiers = []
@@ -30,7 +33,7 @@ class POSTagger(nn.Module):
         for d in datasets:
             if d.tagSet not in self.tagSet2classifier:
                 self.tagSet2classifier[d.tagSet] = len(classifiers)
-                classifiers.append(nn.Linear(self.biLSTMSize * 2, len(d.tag2id)))
+                classifiers.append(nn.Linear(self.posEmbeddingSize, len(d.tag2id)))
 
 
         self.classifiers = nn.ModuleList(classifiers)
@@ -39,7 +42,7 @@ class POSTagger(nn.Module):
         self.dropout = nn.Dropout(0.4)
 
 
-    def forward(self, inputs, desiredOutput = None, batch_process_char = False):
+    def forward(self, inputs, desiredOutput = None, batch_process_char = True):
         # Passing the input through the embeding model in order to retrieve the
         # embeddings
 
@@ -78,6 +81,8 @@ class POSTagger(nn.Module):
         # Passing the embeddings through the bilstm layer(s)
         embeddings[3], _ = self.tagBiLSTM(embeddings[2])
         embeddings[3], _ = rnn.pad_packed_sequence(embeddings[3], batch_first=True)
+        embeddings[3] = self.projection_layer(embeddings[3])
+
         if desiredOutput[3]:
             output[3] = embeddings[3].clone()
 
@@ -86,7 +91,7 @@ class POSTagger(nn.Module):
 
         # Updating view
         # see as: B x L x I (batch_size x length x input_size)
-        embeddings[3] = embeddings[3].contiguous().view(-1, output["length"], self.biLSTMSize * 2)
+        embeddings[3] = embeddings[3].contiguous().view(-1, output["length"], self.posEmbeddingSize)
 
         # Saving final outputs
         # Passing through the final layer for each dataset
