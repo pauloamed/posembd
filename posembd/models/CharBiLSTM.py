@@ -27,7 +27,7 @@ class CharBiLSTM(nn.Module):
         # Dropout
         self.dropout = nn.Dropout(0.1)
 
-    def forward(self, inputs, batch_process = False):
+    def forward(self, inputs, batch_process):
         # For each sample (sentence) on the batch, get a list of 1st-level-word embeddings
         outputs, lens = [], []
         for sample in inputs:
