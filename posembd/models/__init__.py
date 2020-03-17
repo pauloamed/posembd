@@ -6,10 +6,10 @@ import torch
 
 def createPOSModel(charEmbeddingSize, wordEmbeddingSize, posEmbeddingSize, char2id, datasets):
     charBiLSTM = CharBiLSTM(charEmbeddingSize, wordEmbeddingSize, char2id)
-    wordBilstm1 = WordBiLSTM(wordEmbeddingSize)
-    wordBilstm2 = WordBiLSTM(wordEmbeddingSize)
+    wordBiLSTM1 = WordBiLSTM(wordEmbeddingSize)
+    wordBiLSTM2 = WordBiLSTM(wordEmbeddingSize)
 
-    posModel = POSTagger(charBisltm, wordBilstm1, wordBilstm2, posEmbeddingSize, datasets)
+    posModel = POSTagger(charBiLSTM, wordBiLSTM1, wordBiLSTM2, posEmbeddingSize, datasets)
     return posModel
 
 def loadPOSModel(filePath, datasets, char2id):
