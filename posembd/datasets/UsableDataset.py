@@ -19,6 +19,10 @@ class UsableDataset():
 
         self.tag2id = rawDataset.tag2id
 
+        self.id2tag = [None for _ in range(len(self.tag2id))]
+        for tag, id in self.tag2id.items():
+            self.id2tag[id] = tag
+
 
     def __str__(self):
         ret = ""
@@ -27,7 +31,7 @@ class UsableDataset():
         ret += ("Train dataset #sents: {} #words: {}\n".format(len(self.trainInput), self.wordCountTrain))
         ret += ("Val dataset #sents: {} #words: {}\n".format(len(self.valInput), self.wordCountVal))
         ret += ("Test dataset #sents: {} #words: {}\n".format(len(self.testInput),self.wordCountTest))
-        ret += ("Tag set: [{}]\n".format(", ".join(self.id2tag)))
+        ret += ("Tagset: [{}]\n".format(", ".join(self.id2tag)))
         ret += ("=================================================================\n")
 
         return ret
