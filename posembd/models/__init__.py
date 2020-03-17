@@ -4,31 +4,31 @@ from .POSTagger import POSTagger
 
 import torch
 
-def createPOSModel(charEmbeddingSize, wordEmbeddingSize, bilstmSize, char2id, datasets):
-    charBisltm = CharBiLSTM(charEmbeddingSize, wordEmbeddingSize, char2id)
+def createPOSModel(charEmbeddingSize, wordEmbeddingSize, posEmbeddingSize, char2id, datasets):
+    charBiLSTM = CharBiLSTM(charEmbeddingSize, wordEmbeddingSize, char2id)
     wordBilstm1 = WordBiLSTM(wordEmbeddingSize)
     wordBilstm2 = WordBiLSTM(wordEmbeddingSize)
 
-    posModel = POSTagger(charBisltm, wordBilstm1, wordBilstm2, bilstmSize, datasets)
+    posModel = POSTagger(charBisltm, wordBilstm1, wordBilstm2, posEmbeddingSize, datasets)
     return posModel
 
 def loadPOSModel(filePath, datasets, char2id):
     fileDict = torch.load(filePath)
 
-    bilstmSize = fileDict['bilstmSize']
+    bilstmSize = fileDict['posEmbeddingSize']
     charEmbeddingSize = fileDict['charEmbeddingSize']
     wordEmbeddingSize = fileDict['wordEmbeddingSize']
     stateDict = fileDict['stateDict']
 
-    posModel = createPOSModel(charEmbeddingSize, wordEmbeddingSize, char2id, bilstmSize, datasets)
+    posModel = createPOSModel(charEmbeddingSize, wordEmbeddingSize, char2id, posEmbeddingSize, datasets)
     posModel.load_state_dict(stateDict)
 
     return posModel
 
 
-def savePOSModel(posModel, charEmbeddingSize, wordEmbeddingSize, bilstmSize, filePath):
+def savePOSModel(posModel, charEmbeddingSize, wordEmbeddingSize, posEmbeddingSize, filePath):
     fileDict = {
-        'bilstmSize': bilstmSize,
+        'posEmbeddingSize': posEmbeddingSize,
         'charEmbeddingSize': charEmbeddingSize,
         'wordEmbeddingSize': wordEmbeddingSize,
         'stateDict': posModel.state_dict()
