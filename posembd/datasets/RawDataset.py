@@ -16,18 +16,18 @@ class RawDataset():
 
     def loadData(self):
         self.data = (getDataFromFile(self.filePrefix + file)
-                for file in tqdm(self.files, "Loading files from {}".format(self.name)))
+                for file in tqdm(self.files, "Loading files from {}".format(self.name), file=sys.stdout))
 
 
     def parseData(self):
         rets = tuple(self.__parseData(data, self.useDelimiters)
-                for data in tqdm(self.data, "Parsing {} data".format(self.name)))
+                for data in tqdm(self.data, "Parsing {} data".format(self.name), file=sys.stdout))
         self.data, self.wordCounters = zip(*rets)
         self.sentCounters = tuple(len(data) for data in self.data)
 
 
     def extractTagDict(self):
-        extracted_tags = {token[1] for sample in tqdm(self.data[0], "Extracting tags from {}".format(self.name))
+        extracted_tags = {token[1] for sample in tqdm(self.data[0], "Extracting tags from {}".format(self.name), file=sys.stdout)
                 for token in sample}
         tags = list(sorted(extracted_tags))
 
@@ -40,13 +40,13 @@ class RawDataset():
 
 
     def extractChars(self):
-        return {c for sample in tqdm(self.data[0], "Extracting chars from {}".format(self.name))
+        return {c for sample in tqdm(self.data[0], "Extracting chars from {}".format(self.name), file=sys.stdout)
                     for token in sample for c in token[0]}
 
 
     def tensorize(self, char2id):
         rets = tuple(self.__tensorize(data, char2id)
-                for data in tqdm(self.data, "Tensorizing {} dataset".format(self.name)))
+                for data in tqdm(self.data, "Tensorizing {} dataset".format(self.name)), file=sys.stdout)
         self.inputData, self.targetData = zip(*rets)
         del self.data
 

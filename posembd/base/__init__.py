@@ -69,5 +69,5 @@ def get_batches(datasets, tvt, batchSize=1, policy="emilia", numBatches = -1):
 
 
     desc = "{}: batchSize={}, policy={}".format(tvt, batchSize, policy)
-    for b in tqdm.tqdm(batches, desc=desc):
+    for b in tqdm.tqdm(batches, desc=desc, file=sys.stdout):
         yield b

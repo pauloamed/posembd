@@ -63,5 +63,5 @@ class DatasetsPreparer():
         chars = [' ', 'UNK'] + list(sorted(extractedChars))
 
         # Criando estruturas do vocabulário
-        self.char2id = {char: index for index, char in tqdm(enumerate(chars), "Setting char2id dict", total=len(chars))}
-        self.id2char = [char for char, _ in tqdm(self.char2id.items(), "Setting id2char list")]
+        self.char2id = {char: index for index, char in tqdm(enumerate(chars), "Setting char2id dict", total=len(chars), file=sys.stdout)}
+        self.id2char = [char for char, _ in tqdm(self.char2id.items(), "Setting id2char list", file=sys.stdout)]
