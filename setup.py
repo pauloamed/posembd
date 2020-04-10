@@ -8,5 +8,8 @@ setup(
     author_email='pauloaugusto99@ufrn.edu.br',
     license='unlicense',
     packages=find_packages(),
+    install_requires=[
+        'torch',
+    ],
     zip_safe=False
 )
