@@ -2,6 +2,7 @@ import torch
 from ..io import getDataFromFile
 
 from tqdm import tqdm
+import sys
 
 class RawDataset():
     def __init__(self, name, prefix, trainFile, valFile, testFile, tagSet, useDelimiters=True):
@@ -46,7 +47,7 @@ class RawDataset():
 
     def tensorize(self, char2id):
         rets = tuple(self.__tensorize(data, char2id)
-                for data in tqdm(self.data, "Tensorizing {} dataset".format(self.name)), file=sys.stdout)
+                for data in tqdm(self.data, "Tensorizing {} dataset".format(self.name), file=sys.stdout))
         self.inputData, self.targetData = zip(*rets)
         del self.data
 
